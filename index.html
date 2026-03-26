@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>MODERATE CBT</title>
+<style>
+body { font-family: Arial; background: linear-gradient(135deg,#000428,#004e92); color: white; padding: 20px; }
+body::before{ content:"MODERATE"; position: fixed; top: 40%; left: 10%; font-size:120px; color: rgba(255,255,255,0.05); transform:rotate(-30deg); pointer-events:none; }
+h1 { text-align: center; color: cyan; }
+.question { background: rgba(255,255,255,0.05); padding:12px; margin:10px 0; border-radius:10px; }
+button { padding:12px; background: cyan; border: none; border-radius:8px; cursor:pointer; font-weight:bold; }
+#timer { position: fixed; top:10px; right:20px; color: yellow; }
+.correct { color: lightgreen; }
+.wrong { color: red; }
+#quizBox { display:none; }
+.password-container { position: relative; width: 200px; }
+.password-container input { width:100%; padding:8px; }
+.eye { position:absolute; right:8px; top:8px; cursor:pointer; }
+</style>
+</head>
+<body>
+
+<h1>MODERATE Coding Mechatronics CBT</h1>
+
+<div id="passwordBox">
+  <h3>Enter Password</h3>
+  <div class="password-container">
+    <input type="password" id="pass">
+    <span class="eye" onclick="togglePass()">👁️</span>
+  </div>
+  <br>
+  <button onclick="checkPass()">Start</button>
+</div>
+
+<div id="quizBox">
+  <div id="timer">30:00</div>
+  <form id="quizForm"></form>
+  <button onclick="submitQuiz()">Submit</button>
+  <h2 id="result"></h2>
+</div>
+
+<script>
+// Show/hide password
+function togglePass(){
+  let p = document.getElementById("pass");
+  p.type = p.type==="password"?"text":"password";
+}
+
+// Check password
+function checkPass(){
+  if(document.getElementById("pass").value==="MODERATE"){
+    document.getElementById("passwordBox").style.display="none";
+    document.getElementById("quizBox").style.display="block";
+    startTimer();
+  } else alert("Wrong Password");
+}
+
+// Timer 30 min
+let time = 1800;
+function startTimer(){
+  let t=setInterval(()=>{
+    let m=Math.floor(time/60);
+    let s=time%60;
+    document.getElementById("timer").innerHTML = m+":"+(s<10?"0":"")+s;
+    time--;
+    if(time<0){ clearInterval(t); submitQuiz(); }
+  },1000);
+}
+
+// Full 70 questions
+let q=[
+["ICT stands for:",["Internal Computer Tech","Information and Communication Technology","Internet Control Tool","Information Control Tech"],"B"],
+["A computer is a device that:",["Only stores data","Only processes data","Accepts input, processes and gives output","Only prints"],"C"],
+["Which is an input device?",["Monitor","Printer","Keyboard","Speaker"],"C"],
+["The brain of the computer is:",["RAM","CPU","Hard disk","Mouse"],"B"],
+["Which is volatile memory?",["ROM","RAM","CD","Flash"],"B"],
+["Example of output device:",["Mouse","Scanner","Monitor","Keyboard"],"C"],
+["Software refers to:",["Hardware","Programs","Devices","Machines"],"B"],
+["Which is system software?",["Word","Excel","Windows","PowerPoint"],"C"],
+["Which is application software?",["Linux","Windows","MS Word","BIOS"],"C"],
+["Data means:",["Processed info","Raw facts","Output","Knowledge"],"B"],
+
+["Information is:",["Raw data","Processed data","Input","Storage"],"B"],
+["CPU consists of:",["RAM & ROM","ALU & CU","Monitor & Mouse","Disk & Printer"],"B"],
+["ALU performs:",["Storage","Arithmetic & logic","Output","Input"],"B"],
+["CU means:",["Control Unit","Central Unit","Computer Unit","Core Unit"],"A"],
+["Which is a storage device?",["Keyboard","Disk","Monitor","Printer"],"B"],
+["Hard disk is:",["Primary storage","Secondary storage","Input device","Output device"],"B"],
+["ROM is:",["Temporary memory","Permanent memory","Cache","External memory"],"B"],
+["RAM is:",["Permanent","Temporary","External","Optical"],"B"],
+["Printer produces:",["Soft copy","Hard copy","Input","Data"],"B"],
+["Soft copy is:",["Printed output","Screen output","Stored data","Input"],"B"],
+
+["Which is NOT an OS?",["Windows","Linux","Excel","MacOS"],"C"],
+["Example of OS:",["Word","Excel","Linux","PowerPoint"],"C"],
+["BIOS is:",["Application software","System software","Hardware","Device"],"B"],
+["Computer virus is:",["Hardware","Software","Malicious program","Input"],"C"],
+["Antivirus is used to:",["Destroy files","Protect system","Print data","Save data"],"B"],
+["Example of browser:",["Excel","Chrome","Word","Windows"],"B"],
+["Email means:",["Electric mail","Electronic mail","Easy mail","External mail"],"B"],
+["Desktop is:",["Storage","Main screen","Input","Output"],"B"],
+["Taskbar shows:",["Files","Running programs","Data","Storage"],"B"],
+["Icon is:",["Program","Picture representing program","File","Folder"],"B"],
+
+["Internet is:",["Device","Global network","Software","Local network"],"B"],
+["WWW means:",["World Web Wide","World Wide Web","Web World Wide","Wide World Web"],"B"],
+["LAN means:",["Large Area Network","Local Area Network","Long Area Network","Low Area Network"],"B"],
+["WAN means:",["Wide Area Network","Work Area Network","Web Area Network","Wireless Area Network"],"A"],
+["Modem is used for:",["Printing","Internet connection","Storage","Typing"],"B"],
+["URL means:",["Uniform Resource Locator","Universal Resource Link","Uniform Reference Link","Unique Resource Locator"],"A"],
+["Website is:",["Single page","Collection of web pages","Software","Program"],"B"],
+["Homepage is:",["Last page","First page","Middle page","Search page"],"B"],
+["Search engine example:",["Word","Excel","Google","Windows"],"C"],
+["Email requires:",["Printer","Internet","Scanner","Mouse"],"B"],
+
+["File is:",["Device","Collection of data","Folder","Software"],"B"],
+["Folder is:",["Collection of files","Device","Input","Output"],"A"],
+["Save means:",["Delete data","Store data","Copy data","Move data"],"B"],
+["Copy means:",["Move data","Duplicate data","Delete data","Store data"],"B"],
+["Paste means:",["Insert copied data","Delete data","Save data","Move data"],"A"],
+["Cut means:",["Copy data","Move data","Delete data","Store data"],"B"],
+["Delete key is used to:",["Save","Remove data","Copy","Paste"],"B"],
+["Recycle bin stores:",["Saved files","Deleted files","Programs","Data"],"B"],
+["Booting means:",["Shutting down","Starting computer","Restarting program","Saving data"],"B"],
+["Shutdown means:",["Restart","Turn off computer","Save file","Delete file"],"B"],
+
+["Computer works on:",["Water","Electricity","Fuel","Air"],"B"],
+["UPS stands for:",["Universal Power Supply","Uninterruptible Power Supply","United Power System","Unique Power Source"],"B"],
+["Keyboard is:",["Output","Input","Storage","Software"],"B"],
+["Monitor is:",["Input","Output","Storage","Software"],"B"],
+["Scanner is:",["Input","Output","Storage","Software"],"A"],
+["Speaker is:",["Input","Output","Storage","Software"],"B"],
+["Flash drive is:",["Input","Output","Storage","Software"],"C"],
+["CD is:",["Input","Output","Storage","Software"],"C"],
+["CPU full meaning:",["Central Processing Unit","Computer Processing Unit","Control Processing Unit","Core Processing Unit"],"A"],
+["ALU full meaning:",["Arithmetic Logic Unit","Automatic Logic Unit","Advanced Logic Unit","Arithmetic Link Unit"],"A"],
+
+["CU controls:",["Input/output operations","Storage","Printing","Scanning"],"A"],
+["Example of hardware:",["Word","Windows","Keyboard","Excel"],"C"],
+["Example of software:",["Mouse","Monitor","Excel","Printer"],"C"],
+["Computer cannot:",["Calculate","Process data","Think independently","Store data"],"C"],
+["Main memory is:",["RAM","Hard disk","CD","Flash"],"A"],
+["Secondary memory is:",["RAM","ROM","Hard disk","Cache"],"C"],
+["Virus affects:",["Hardware","Software","Both","None"],"B"],
+["Antivirus example:",["Chrome","Avast","Word","Excel"],"B"],
+["Booting starts from:",["OS","BIOS","Application","File"],"B"],
+["Physical parts are:",["Software","Hardware","Programs","Data"],"B"]
+];
+
+// Render questions
+let form=document.getElementById("quizForm");
+q.forEach((item,i)=>{
+  let d=document.createElement("div");
+  d.className="question";
+  d.innerHTML=`<b>${i+1}. ${item[0]}</b><br>
+  <input type="radio" name="q${i}" value="A"> A. ${item[1][0]}<br>
+  <input type="radio" name="q${i}" value="B"> B. ${item[1][1]}<br>
+  <input type="radio" name="q${i}" value="C"> C. ${item[1][2]}<br>
+  <input type="radio" name="q${i}" value="D"> D. ${item[1][3]}<br>`;
+  form.appendChild(d);
+});
+
+// Submit
+function submitQuiz(){
+  if(!confirm("Submit exam?")) return;
+  let score=0; let output="";
+  q.forEach((item,i)=>{
+    let sel=document.querySelector(`input[name="q${i}"]:checked`);
+    if(sel){
+      if(sel.value===item[2]){
+        score++;
+        output+=`<p class="correct">Q${i+1}: Correct</p>`;
+      } else {
+        output+=`<p class="wrong">Q${i+1}: Wrong (Ans: ${item[2]})</p>`;
+      }
+    }
+  });
+  document.getElementById("result").innerHTML=`Score: ${score}/70<br>`+output;
+}
+</script>
+
+</body>
+</html>
